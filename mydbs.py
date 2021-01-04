@@ -22,6 +22,7 @@ class Race(Base):
         return "<race(name='%s', venue='%s', type='%s', number=%d, start=%)>" % (
             self.rname, self.rvenue, self.rtype, self.rnumber, time_str)
 
+
 # generate examples if run indidivually (not imported)
 if __name__ == "__main__":
     from sqlalchemy.orm import sessionmaker
@@ -30,6 +31,7 @@ if __name__ == "__main__":
     from random import randint
 
     engine = create_engine('sqlite:///foo.db', echo=True)
+    Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
 
@@ -43,8 +45,8 @@ if __name__ == "__main__":
         int_delta = (delta.days * 24 * 60 * 60) + delta.seconds
         random_second = randrange(int_delta)
         return start + timedelta(seconds=random_second)
-    start = datetime.strptime('1/1/2020 0:00 AM', '%m/%d/%Y %I:%M %p')
-    end = datetime.strptime('1/1/2021 11:59 AM', '%m/%d/%Y %I:%M %p')
+    start = datetime.strptime('1/1/2008 1:30 PM', '%m/%d/%Y %I:%M %p')
+    end = datetime.strptime('1/1/2009 4:50 AM', '%m/%d/%Y %I:%M %p')
 
     bobby = Race(rname="bobby", rstart=random_date(start, end), rvenue="melbourne", rtype="I dont know what this field means but ok",
                  rnumber=randint(0, 50))
