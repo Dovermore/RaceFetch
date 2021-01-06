@@ -13,7 +13,6 @@ api = Api(app)
 
 engine = create_engine('sqlite:///foo.db', echo=True)
 Session = sessionmaker(bind=engine)
-session = Session()
 
 
 @api.resource("/")
@@ -25,14 +24,15 @@ class Inex(Resource):
 @api.resource("/race/all")
 class AllRace(Resource):
     def get(self):
-        results = []
-        for race in session.query(Race).order_by(Race.rstart):
-            results.append({race.id: {
-                "type": race.rtype,
-                "number": race.rnumber,
-                "name": race.rname,
-                "start": race.rstart
-            }})
+        with Session() as sess:
+            results = []
+            for race in sess.query(Race).order_by(Race.rstart):
+                results.append({race.id: {
+                    "type": race.rtype,
+                    "number": race.rnumber,
+                    "name": race.rname,
+                    "start": race.rstart
+                }})
         return jsonify(results)
 
 
