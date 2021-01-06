@@ -16,7 +16,7 @@ Session = sessionmaker(bind=engine)
 
 
 @api.resource("/")
-class Inex(Resource):
+class Index(Resource):
     def get(self):
         return r"<h1>This is the index page.</h1>"
 
